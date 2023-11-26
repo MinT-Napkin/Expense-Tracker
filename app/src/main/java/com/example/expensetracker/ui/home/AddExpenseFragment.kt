@@ -1,49 +1,78 @@
-//package com.example.expensetracker.ui.home
-//
-//import android.app.DatePickerDialog
-//import android.app.Dialog
-//import android.os.Bundle
-//import android.widget.DatePicker
-//import androidx.core.os.bundleOf
-//import androidx.fragment.app.DialogFragment
-//import androidx.fragment.app.setFragmentResult
-//import androidx.navigation.fragment.navArgs
-//
-//import java.util.*
-//
-//class AddExpenseFragment : DialogFragment() {
-//
-//    private val args: DatePickerFragmentArgs by navArgs()
-//
-//
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        val dateListener = DatePickerDialog.OnDateSetListener { _: DatePicker, year: Int, month: Int, day: Int ->
-//
-//            val resultDate = GregorianCalendar(year, month, day).time
-//
-//            setFragmentResult(
-//                REQUEST_KEY_DATE,
-//                bundleOf(BUNDLE_KEY_DATE to resultDate)
-//            )
-//        }
-//
-//        val calendar = Calendar.getInstance()
-//        calendar.time = args.crimeDate
-//        val initialYear = calendar.get(Calendar.YEAR)
-//        val initialMonth = calendar.get(Calendar.MONTH)
-//        val initialDay = calendar.get(Calendar.DAY_OF_MONTH)
-//
-//        return DatePickerDialog(
-//            requireContext(),
-//            dateListener,
-//            initialYear,
-//            initialMonth,
-//            initialDay
-//        )
-//    }
-//
-//    companion object {
-//        const val REQUEST_KEY_DATE = "REQUEST_KEY_DATE"
-//        const val BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE"
-//    }
-//}
+package com.example.expensetracker.ui.home
+
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import com.example.expensetracker.databinding.FragmentAddExpenseBinding
+import com.example.expensetracker.ui.expense_list.Expense
+import java.util.*
+
+private const val TAG = "ADD_EXPENSE_FRAGMENT"
+
+class AddExpenseFragment : Fragment() {
+
+    private var _binding: FragmentAddExpenseBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var expense: Expense
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        expense = Expense(
+            id = UUID.randomUUID(),
+            value = 10.toFloat(),
+            description = "Expense #0",
+            category = "Food",
+            date = Date(),
+            isPaid = true
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding =
+            FragmentAddExpenseBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            expenseValue.doOnTextChanged { text, _, _, _ ->
+                //TODO: make text input only accept numbers
+                expense = try {
+                    // Attempt to convert text to a float
+                    expense.copy(value = text.toString().toFloat())
+                } catch (e: NumberFormatException) {
+                    // Handle the case where text is not a valid float
+                    Log.e(TAG,"INVALID FLOAT")
+                    expense // Keep the expense unchanged
+                }
+            }
+
+            expenseDatePaid.apply {
+                //TODO: for 'gift list' feature
+                text = expense.date.toString()
+                isEnabled = false
+            }
+
+            expenseIsPaid.setOnCheckedChangeListener { _, isChecked ->
+                //TODO: for 'gift list' feature
+                expense = expense.copy(isPaid = true)
+                expenseIsPaid.isEnabled = false
+            }
+
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

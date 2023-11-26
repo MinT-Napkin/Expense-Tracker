@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentHomeBinding
@@ -61,7 +62,9 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             addExpenseBtn.setOnClickListener{
-                showDialog()
+                //TODO
+//                val action = HomeFragmentDirections.actionNavHomeToAddExpenseFragment()
+//                findNavController().navigate(action)
             }
         }
 
@@ -70,9 +73,5 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
-    }
-
-    private fun showDialog() {
-        //TODO
     }
 }

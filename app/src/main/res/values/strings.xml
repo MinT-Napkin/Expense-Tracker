@@ -13,4 +13,14 @@
     <string name="add_expense_txt">+</string>
     <string name="manuel_input_hint">Insert expense amount here</string>
     <string name="confirm_btn">CONFIRM</string>
+
+    <!--expense list strings-->
+    <string name="expenseList_hint_label">Enter amount here.</string>
+    <string name="expenseList_hintDesc_label">Enter description here. (optional)</string>
+    <string name="expenseList_title_label">Value</string>
+    <string name="expenseList_desc_label">Description</string>
+    <string name="expenseList_category_label">Category</string>
+    <string name="expenseList_date_label">Date</string>
+    <string name="expenseList_is_paid_label">Is Paid?</string>
+
 </resources>
