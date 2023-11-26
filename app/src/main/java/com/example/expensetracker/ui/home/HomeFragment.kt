@@ -63,8 +63,8 @@ class HomeFragment : Fragment() {
         binding.apply {
             addExpenseBtn.setOnClickListener{
                 //TODO
-//                val action = HomeFragmentDirections.actionNavHomeToAddExpenseFragment()
-//                findNavController().navigate(action)
+                val action = HomeFragmentDirections.actionFragmentHomeToAddExpenseFragment()
+                findNavController().navigate(action)
             }
         }
 
