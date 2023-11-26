@@ -11,7 +11,7 @@ import com.example.expensetracker.databinding.FragmentAddExpenseBinding
 import com.example.expensetracker.ui.expense_list.Expense
 import java.util.*
 
-private const val TAG = "ADD_EXPENSE_FRAGMENT"
+private const val TAG = "AddExpenseFragment"
 
 class AddExpenseFragment : Fragment() {
 
