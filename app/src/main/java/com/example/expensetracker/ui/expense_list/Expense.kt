@@ -1,9 +1,12 @@
 package com.example.expensetracker.ui.expense_list
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
+@Entity
 data class Expense (
-    val id: UUID,
+    @PrimaryKey val id: UUID,
     val value: Float,
     val description: String,
     val category: String,

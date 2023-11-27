@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.expensetracker.databinding.FragmentAddExpenseBinding
 import com.example.expensetracker.ui.expense_list.Expense
+import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
+import com.example.expensetracker.ui.expense_list.ExpenseRepository
 import java.util.*
 
 private const val TAG = "AddExpenseFragment"
@@ -18,10 +21,13 @@ class AddExpenseFragment : Fragment() {
     private var _binding: FragmentAddExpenseBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var expense: Expense
+    private val expenseListViewModel: ExpenseListViewModel by viewModels()
+
+    private lateinit var newExpense: Expense
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        expense = Expense(
+        newExpense = Expense(
             id = UUID.randomUUID(),
             value = 10.toFloat(),
             description = "Expense #0",
@@ -46,28 +52,31 @@ class AddExpenseFragment : Fragment() {
         binding.apply {
             expenseValue.doOnTextChanged { text, _, _, _ ->
                 //TODO: make text input only accept numbers
-                expense = try {
+                newExpense = try {
                     // Attempt to convert text to a float
-                    expense.copy(value = text.toString().toFloat())
+                    newExpense.copy(value = text.toString().toFloat())
                 } catch (e: NumberFormatException) {
                     // Handle the case where text is not a valid float
                     Log.e(TAG,"INVALID FLOAT")
-                    expense // Keep the expense unchanged
+                    newExpense // Keep the expense unchanged
                 }
             }
 
             expenseDatePaid.apply {
                 //TODO: for 'gift list' feature
-                text = expense.date.toString()
+                text = newExpense.date.toString()
                 isEnabled = false
             }
 
             expenseIsPaid.setOnCheckedChangeListener { _, isChecked ->
                 //TODO: for 'gift list' feature
-                expense = expense.copy(isPaid = true)
+                newExpense = newExpense.copy(isPaid = true)
                 expenseIsPaid.isEnabled = false
             }
 
+            expenseAddConfirm.setOnClickListener{
+                expenseListViewModel.addExpense(newExpense)
+            }
         }
     }
 

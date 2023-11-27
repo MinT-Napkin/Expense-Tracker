@@ -3,27 +3,34 @@ package com.example.expensetracker.ui.expense_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.util.*
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class ExpenseListViewModel : ViewModel() {
+
+    private val expenseRepository = ExpenseRepository.get()
+
+    private val _expenses: MutableStateFlow<List<Expense>> = MutableStateFlow(emptyList())
+    val expenses: StateFlow<List<Expense>>
+        get() = _expenses.asStateFlow()
 
     private val _text = MutableLiveData<String>().apply {
         value = ""
     }
     val text: LiveData<String> = _text
 
-    val expenses = mutableListOf<Expense>()
     init {
-        for (i in 0 until 100) {
-            val expense = Expense(
-                id = UUID.randomUUID(),
-                value = i.toString().toFloat(),
-                description ="Expense #$i",
-                category = "Food",
-                date = Date(),
-                isPaid = i % 2 == 0
-            )
-            expenses += expense
+        viewModelScope.launch {
+            expenseRepository.getExpenses().collect {
+                _expenses.value = it
+            }
         }
+    }
+
+    fun addExpense(expense: Expense) {
+        expenseRepository.addExpense(expense)
     }
 }

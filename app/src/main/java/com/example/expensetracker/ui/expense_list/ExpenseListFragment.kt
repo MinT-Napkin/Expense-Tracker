@@ -1,16 +1,19 @@
 package com.example.expensetracker.ui.expense_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
+import kotlinx.coroutines.launch
 
 private const val TAG = "ExpenseListFragment"
 class ExpenseListFragment : Fragment() {
@@ -23,32 +26,35 @@ class ExpenseListFragment : Fragment() {
 
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total crimes: ${expenseListViewModel.expenses.size}")
-    }
-
     override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-                ViewModelProvider(this).get(ExpenseListViewModel::class.java)
-
         _binding = FragmentExpenseListBinding.inflate(inflater, container, false)
 
         //pg 307
         binding.expenseRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        //319, SETS UP ADAPTER
-        val expenses = expenseListViewModel.expenses
-        val adapter = ExpenseListAdapter(expenses)
-        binding.expenseRecyclerView.adapter = adapter
-
         return binding.root
     }
 
+    // calls coroutines here - refer to page 390!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                expenseListViewModel.expenses.collect { expenses ->
+                    binding.expenseRecyclerView.adapter =
+                        ExpenseListAdapter(expenses) { crimeId ->
+                            val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(crimeId)
+                            findNavController().navigate(action)
+                        }
+                }
+
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
