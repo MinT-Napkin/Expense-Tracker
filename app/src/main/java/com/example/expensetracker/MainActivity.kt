@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.menu_currency_converter -> {
                 // Navigate to the CurrencyConverterFragment here
                 val navController = findNavController(R.id.nav_host_fragment_content_main)
                 navController.navigate(R.id.CurrencyConversionFragment)
