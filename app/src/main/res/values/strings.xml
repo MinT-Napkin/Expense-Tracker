@@ -23,6 +23,10 @@
     <string name="expenseList_date_label">Date</string>
     <string name="expenseList_is_paid_label">Is Paid?</string>
 
+    <string name="enter_amount_hint">Enter Amount</string>
+    <string name="convert_button_text">Convert</string>
+    <string name="converted_amount">Converted Amount: %1$.2f</string>
+
     <!--category array list-->
     <string-array name="categories_array">
         <item>Personal</item>
