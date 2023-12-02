@@ -86,7 +86,7 @@ class AddExpenseFragment : Fragment() {
                     val selectedItem = parent?.getItemAtPosition(position).toString()
                     // Use the selectedItem text as needed
                     Log.d(TAG, "Selected item: $selectedItem")
-                    newExpense.copy(category = selectedItem)
+                    newExpense = newExpense.copy(category = selectedItem)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {

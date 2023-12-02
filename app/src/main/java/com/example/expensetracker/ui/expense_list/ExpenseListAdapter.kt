@@ -20,7 +20,7 @@ class ExpenseHolder(
 
         binding.apply{
 
-            Log.i(TAG, expense.description)
+//            Log.i(TAG, expense.description)
             expenseDescription.text = expense.description
             expenseDate.text = expense.date.toString()
 
@@ -31,16 +31,33 @@ class ExpenseHolder(
                 onExpenseClicked(expense.id)
             }
 
+            val category = expense.category
+//            Log.i(TAG, "$category")
             // handle category image
-            when (expense.category) { //TODO unique image for each category
+            when (category) { //TODO unique image for each category
+                "Personal" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.personal)
+                }
+                "Bills" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.bills)
+                }
+                "Utilities" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.utilities)
+                }
+                "Transportation" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.transportation)
+                }
                 "Food" -> {
-//                    expenseCategoryImage.setImageResource(R.drawable.testimage2)
+                    expenseCategoryImage.setImageResource(R.drawable.food)
                 }
                 "Entertainment" -> {
-
+                    expenseCategoryImage.setImageResource(R.drawable.entertainment)
+                }
+                "Gift(s)" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.gift)
                 }
                 "Other Fees" -> {
-
+                    expenseCategoryImage.setImageResource(R.drawable.other_fees)
                 }
                 else -> {
                     expenseCategoryImage.setImageResource(R.drawable.testimage)
