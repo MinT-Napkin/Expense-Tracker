@@ -5,14 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.expensetracker.R
 import com.example.expensetracker.databinding.FragmentAddExpenseBinding
 import com.example.expensetracker.ui.expense_list.Expense
 import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
-import com.example.expensetracker.ui.expense_list.ExpenseRepository
 import java.util.*
+
 
 private const val TAG = "AddExpenseFragment"
 
@@ -59,6 +62,36 @@ class AddExpenseFragment : Fragment() {
                     // Handle the case where text is not a valid float
                     Log.e(TAG,"INVALID FLOAT")
                     newExpense // Keep the expense unchanged
+                }
+            }
+
+            expenseDescription.doOnTextChanged{ text, _, _, _ ->
+                newExpense = newExpense.copy(description = text.toString())
+            }
+
+            // CATEGORY DROPDOWN
+            ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.categories_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears.
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner.
+                expenseCategorySpinner.adapter = adapter
+            }
+
+            expenseCategorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedItem = parent?.getItemAtPosition(position).toString()
+                    // Use the selectedItem text as needed
+                    Log.d(TAG, "Selected item: $selectedItem")
+                    newExpense = newExpense.copy(category = selectedItem)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // Handle the case where nothing is selected
+
                 }
             }
 

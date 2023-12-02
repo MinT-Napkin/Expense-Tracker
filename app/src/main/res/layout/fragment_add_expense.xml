@@ -53,7 +53,7 @@
         android:importantForAutofill="no"
         android:inputType="text" />
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/expense_category_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"

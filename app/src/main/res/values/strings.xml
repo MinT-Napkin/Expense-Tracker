@@ -23,4 +23,15 @@
     <string name="expenseList_date_label">Date</string>
     <string name="expenseList_is_paid_label">Is Paid?</string>
 
+    <!--category array list-->
+    <string-array name="categories_array">
+        <item>Personal</item>
+        <item>Bills</item>
+        <item>Utilities</item>
+        <item>Transportation</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Gift(s)</item>
+        <item>Other Fees</item>
+    </string-array>
 </resources>

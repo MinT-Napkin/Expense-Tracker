@@ -1,11 +1,15 @@
 package com.example.expensetracker.ui.expense_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expensetracker.R
 import com.example.expensetracker.databinding.ListItemExpenseBinding
 import java.util.*
 
+
+private const val TAG = "ExpenseListAdapter"
 //refer to page 316
 class ExpenseHolder(
     val binding: ListItemExpenseBinding
@@ -13,16 +17,53 @@ class ExpenseHolder(
 {
     // refer to page 437 for expenseID explanation
     fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit) {
-        binding.expenseDescription.text = expense.description
-        binding.expenseDate.text = expense.date.toString()
 
-        val valueText = expense.value.toString()
-        binding.expenseValue.text = "$$valueText"
+        binding.apply{
 
-        binding.root.setOnClickListener {
-            onExpenseClicked(expense.id)
+//            Log.i(TAG, expense.description)
+            expenseDescription.text = expense.description
+            expenseDate.text = expense.date.toString()
+
+            val valueText = expense.value.toString()
+            expenseValue.text = "$$valueText"
+
+            root.setOnClickListener {
+                onExpenseClicked(expense.id)
+            }
+
+            val category = expense.category
+//            Log.i(TAG, "$category")
+            // handle category image
+            when (category) { //TODO unique image for each category
+                "Personal" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.personal)
+                }
+                "Bills" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.bills)
+                }
+                "Utilities" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.utilities)
+                }
+                "Transportation" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.transportation)
+                }
+                "Food" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.food)
+                }
+                "Entertainment" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.entertainment)
+                }
+                "Gift(s)" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.gift)
+                }
+                "Other Fees" -> {
+                    expenseCategoryImage.setImageResource(R.drawable.other_fees)
+                }
+                else -> {
+                    expenseCategoryImage.setImageResource(R.drawable.testimage)
+                }
+            }
         }
-
     }
 }
 
