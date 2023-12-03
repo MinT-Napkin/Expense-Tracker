@@ -58,7 +58,7 @@
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/CurrencyConversionFragment"
+        android:id="@+id/nav_currency"
         android:name="com.example.expensetracker.ui.settings.CurrencyConversionFragment"
         android:label="Currency Converter"
         tools:layout="@layout/fragment_currency_converter" />
