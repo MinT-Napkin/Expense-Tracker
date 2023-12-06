@@ -33,7 +33,7 @@ class EditExpenseViewModel (expenseId: UUID) : ViewModel() {
     }
 }
 
-class CrimeDetailViewModelFactory(
+class ExpenseDetailViewModelFactory(
     private val expenseId: UUID
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
