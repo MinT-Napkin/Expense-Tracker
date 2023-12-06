@@ -10,4 +10,5 @@ class HomeViewModel : ViewModel() {
         value = "[Budget Here]"
     }
     val text: LiveData<String> = _text
+
 }
