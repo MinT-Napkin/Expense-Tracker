@@ -29,7 +29,7 @@ class EditExpenseFragment : Fragment() {
     private val args: EditExpenseFragmentArgs by navArgs()
 
     private val editExpenseViewModel: EditExpenseViewModel by viewModels {
-        CrimeDetailViewModelFactory(args.expenseId)
+        ExpenseDetailViewModelFactory(args.expenseId)
     }
 
     override fun onCreateView(
