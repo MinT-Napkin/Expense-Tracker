@@ -1,17 +1,17 @@
 package com.example.expensetracker
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.expensetracker.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+import ir.mahozad.android.PieChart
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +41,13 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val pieChart = findViewById<PieChart>(R.id.pieChart)
+        pieChart.slices = listOf(
+            PieChart.Slice(0.2f, Color.BLUE),
+            PieChart.Slice(0.4f, Color.MAGENTA),
+            PieChart.Slice(0.3f, Color.YELLOW),
+            PieChart.Slice(0.1f, Color.CYAN)
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

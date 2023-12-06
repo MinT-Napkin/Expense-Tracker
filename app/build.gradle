@@ -60,6 +60,8 @@ dependencies {
 
     //dependency from pg 274
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    //pie
+    implementation("ir.mahozad.android:pie-chart:0.7.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
