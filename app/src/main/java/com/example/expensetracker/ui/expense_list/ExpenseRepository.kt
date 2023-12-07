@@ -45,6 +45,13 @@ class ExpenseRepository private constructor(
     fun addExpense(expense: Expense) {
         database.expenseDao().addExpense(expense)
     }
+    fun deleteExpense(expenseId: UUID) {
+        val expenseToDelete = database.expenseDao().getExpense(expenseId)
+        if (expenseToDelete != null) {
+            database.expenseDao().deleteExpense(expenseToDelete)
+        }
+    }
+
 
     companion object {
         private var INSTANCE: ExpenseRepository? = null

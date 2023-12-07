@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -16,42 +15,48 @@ import com.example.expensetracker.databinding.FragmentExpenseListBinding
 import kotlinx.coroutines.launch
 
 private const val TAG = "ExpenseListFragment"
+
 class ExpenseListFragment : Fragment() {
 
     private var _binding: FragmentExpenseListBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
     override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentExpenseListBinding.inflate(inflater, container, false)
-
-        //pg 307
         binding.expenseRecyclerView.layoutManager = LinearLayoutManager(context)
-
         return binding.root
     }
 
-    // calls coroutines here - refer to page 390!
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupExpenseList()
+    }
+
+    private fun setupExpenseList() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 expenseListViewModel.expenses.collect { expenses ->
                     binding.expenseRecyclerView.adapter =
-                        ExpenseListAdapter(expenses) { crimeId ->
-                            val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(crimeId)
-                            findNavController().navigate(action)
-                        }
+                        ExpenseListAdapter(
+                            expenses,
+                            { crimeId ->
+                                val action =
+                                    ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(
+                                        crimeId
+                                    )
+                                findNavController().navigate(action)
+                            },
+                            { expenseId ->
+                                expenseListViewModel.deleteExpense(expenseId)
+                            }
+                        )
                 }
-
             }
         }
     }

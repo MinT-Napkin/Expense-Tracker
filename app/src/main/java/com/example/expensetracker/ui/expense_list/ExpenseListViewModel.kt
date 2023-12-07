@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class ExpenseListViewModel : ViewModel() {
 
@@ -32,5 +33,10 @@ class ExpenseListViewModel : ViewModel() {
 
     fun addExpense(expense: Expense) {
         expenseRepository.addExpense(expense)
+    }
+    fun deleteExpense(expenseId: UUID) {
+        viewModelScope.launch {
+            expenseRepository.deleteExpense(expenseId)
+        }
     }
 }
