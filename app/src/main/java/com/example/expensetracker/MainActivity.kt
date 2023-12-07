@@ -41,18 +41,6 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_home, R.id.nav_gallery, R.id.nav_wish_list, R.id.nav_currency), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        val pieChart = findViewById<PieChart>(R.id.pieChart)
-        pieChart.slices = listOf(
-            PieChart.Slice(0.1f, Color.rgb(214, 152, 158), legend = "Personal"),
-            PieChart.Slice(0.1f, Color.rgb(171, 152, 158), legend = "Bills"),
-            PieChart.Slice(0.1f, Color.rgb(171, 152, 214), legend = "Utilities"),
-            PieChart.Slice(0.1f, Color.rgb(171, 214, 214), legend = "Transportation"),
-            PieChart.Slice(0.1f, Color.rgb(244, 232, 215), legend = "Food"),
-            PieChart.Slice(0.1f, Color.rgb(170, 213, 220), legend = "Entertainment"),
-            PieChart.Slice(0.2f, Color.rgb(222, 244, 244), legend = "Gift(s)"),
-            PieChart.Slice(0.2f, Color.rgb(244, 222, 220), legend = "Others"),
-        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

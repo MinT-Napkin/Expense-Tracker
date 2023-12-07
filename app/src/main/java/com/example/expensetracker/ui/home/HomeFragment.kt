@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import com.example.expensetracker.R
+import com.example.expensetracker.ui.expense_list.Expense
 import com.example.expensetracker.ui.expense_list.ExpenseListAdapter
 import com.example.expensetracker.ui.expense_list.ExpenseListFragmentDirections
 import ir.mahozad.android.DimensionResource
@@ -45,9 +46,9 @@ class HomeFragment : Fragment() {
 
     // This property is only valid between onCreateView and
     // onDestroyView
-    private val binding get() = checkNotNull(_binding) {
-        "Cannot access binding because it is null."
-    }
+    private val binding get() = _binding!!
+
+    private val homeViewModel: HomeViewModel by viewModels()
 
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
@@ -56,10 +57,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -83,10 +80,11 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             addExpenseBtn.setOnClickListener{
-                //TODO
                 val action = HomeFragmentDirections.actionFragmentHomeToAddExpenseFragment()
                 findNavController().navigate(action)
             }
+
+            // budget handling
 
             val expensesList = expenseListViewModel.expenses
 
@@ -110,6 +108,7 @@ class HomeFragment : Fragment() {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    //part of pie graph
                     percentagesFlow.collect { percentagesMap ->
                         val personalPer = percentagesMap["Personal"] ?: 0.0f
                         val billsPer = percentagesMap["Bills"] ?: 0.0f
@@ -119,6 +118,19 @@ class HomeFragment : Fragment() {
                         val entertainmentPer = percentagesMap["Entertainment"] ?: 0.0f
                         val giftsPer = percentagesMap["Gift(s)"] ?: 0.0f
                         val otherPer = percentagesMap["Other"] ?: 0.0f
+//
+//                        val slicesList = listOf(
+//                            PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal", label = "Personal"),
+//                            PieChart.Slice(billsPer, Color.rgb(171, 152, 158), legend = "Bills", label = "Bills"),
+//                            PieChart.Slice(utilitiesPer, Color.rgb(171, 152, 214), legend = "Utilities", label = "Utilities"),
+//                            PieChart.Slice(transportationPer, Color.rgb(171, 214, 214), legend = "Transportation", label = "Transportation"),
+//                            PieChart.Slice(foodPer, Color.rgb(244, 232, 215), legend = "Food", label = "Food"),
+//                            PieChart.Slice(entertainmentPer, Color.rgb(170, 213, 220), legend = "Entertainment", label = "Entertainment"),
+//                            PieChart.Slice(giftsPer, Color.rgb(222, 244, 244), legend = "Gift(s)", label = "Gift(s)"),
+//                            PieChart.Slice(otherPer, Color.rgb(244, 222, 220), legend = "Others", label = "Others"),
+//                        )
+//
+//                        val filteredSlices = slicesList.filter { it.value > 0.0f }
 
                         pieChart.apply {
                             slices = listOf(
@@ -138,8 +150,19 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
+            } // coroutine end
+
+            setBtn.setOnClickListener {
+                val dialog = UpdateBudgetDialogFragment()
+                dialog.show(requireActivity().supportFragmentManager, "UpdateBudgetDialog")
             }
-        }
+
+            updateBtn.setOnClickListener{
+                homeViewModel.updateUi()
+            }
+
+
+        } // binding end
 
     }
 

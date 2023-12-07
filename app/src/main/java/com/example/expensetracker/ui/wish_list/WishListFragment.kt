@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
 import com.example.expensetracker.databinding.FragmentWishListBinding
 import com.example.expensetracker.ui.expense_list.*
+import com.example.expensetracker.ui.home.HomeViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.exp
 
@@ -32,6 +33,8 @@ class WishListFragment : Fragment() {
     private val wishListViewModel: WishListViewModel by viewModels()
 
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
+
+    private val homeListViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

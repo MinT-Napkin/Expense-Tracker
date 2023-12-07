@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
+import com.example.expensetracker.ui.home.HomeViewModel
 import com.example.expensetracker.ui.wish_list.WishListAdapter
 import kotlinx.coroutines.launch
 
@@ -22,6 +23,7 @@ class ExpenseListFragment : Fragment() {
     private var _binding: FragmentExpenseListBinding? = null
     private val binding get() = _binding!!
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
+    private val homeListViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +60,7 @@ class ExpenseListFragment : Fragment() {
                             },
                             { expenseId ->
                                 expenseListViewModel.deleteExpense(expenseId)
+                                homeListViewModel.updateUi()
                             }
                         )
                 }
