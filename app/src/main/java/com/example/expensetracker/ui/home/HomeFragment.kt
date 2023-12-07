@@ -82,16 +82,23 @@ class HomeFragment : Fragment() {
 
             val expensesList = expenseListViewModel.expenses
 
+            val categoryValueFlow: Flow<Map<String, Float>> = expensesList.map { expenses ->
+                expenses.groupBy { it.category }
+                    .mapValues { (_, list) -> list.sumByDouble { it.value.toDouble() }.toFloat() }
+            }
+
             val categoryCountFlow: Flow<Map<String, Int>> = expensesList.map { expenses ->
                 expenses.groupBy { it.category }
                     .mapValues { (_, list) -> list.size }
             }
 
-            val totalCountFlow: Flow<Int> = expensesList.map { it.size }
+            val totalValueFlow: Flow<Float> = expensesList.map { expenses ->
+                expenses.sumByDouble { it.value.toDouble() }.toFloat()
+            }
 
             val percentagesFlow: Flow<Map<String, Float>> = combine(
-                categoryCountFlow,
-                totalCountFlow
+                categoryValueFlow,
+                totalValueFlow
             ) { categoryCount, totalCount ->
                 categoryCount.mapValues { (_, count) -> count.toFloat() / totalCount }
             }
@@ -105,7 +112,7 @@ class HomeFragment : Fragment() {
                         val transportationPer = percentagesMap["Transportation"] ?: 0.0f
                         val foodPer = percentagesMap["Food"] ?: 0.0f
                         val entertainmentPer = percentagesMap["Entertainment"] ?: 0.0f
-                        val giftsPer = percentagesMap["Gifts"] ?: 0.0f
+                        val giftsPer = percentagesMap["Gift(s)"] ?: 0.0f
                         val otherPer = percentagesMap["Other"] ?: 0.0f
 
                         pieChart.apply {
