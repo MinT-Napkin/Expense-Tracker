@@ -51,11 +51,29 @@
         </fragment>
     </navigation>
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.expensetracker.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+    <navigation
+        android:id="@+id/nav_wish_list"
+        android:label="Home"
+        app:startDestination="@id/wish_list">
+        <fragment
+            android:id="@+id/wish_list"
+            android:name="com.example.expensetracker.ui.wish_list.WishListFragment"
+            android:label="@string/menu_wish_list"
+            tools:layout="@layout/fragment_wish_list" >
+            <action
+                android:id="@+id/action_fragment_wish_list_to_fragment_edit_expense"
+                app:destination="@id/fragment_edit_expense" />
+        </fragment>
+        <fragment
+            android:id="@+id/fragment_edit_expense"
+            android:name="com.example.expensetracker.ui.expense_list.EditExpenseFragment"
+            android:label="Edit Expense"
+            tools:layout="@layout/fragment_edit_expense" >
+            <argument
+                android:name="expenseId"
+                app:argType="java.util.UUID" />
+        </fragment>
+    </navigation>
 
     <fragment
         android:id="@+id/nav_currency"

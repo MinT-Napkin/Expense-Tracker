@@ -103,8 +103,7 @@ class AddExpenseFragment : Fragment() {
 
             expenseIsPaid.setOnCheckedChangeListener { _, isChecked ->
                 //TODO: for 'gift list' feature
-                newExpense = newExpense.copy(isPaid = true)
-                expenseIsPaid.isEnabled = false
+                newExpense = newExpense.copy(isPaid = !isChecked)
             }
 
             expenseAddConfirm.setOnClickListener{
