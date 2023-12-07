@@ -117,7 +117,7 @@ class HomeFragment : Fragment() {
                         val foodPer = percentagesMap["Food"] ?: 0.0f
                         val entertainmentPer = percentagesMap["Entertainment"] ?: 0.0f
                         val giftsPer = percentagesMap["Gift(s)"] ?: 0.0f
-                        val otherPer = percentagesMap["Other"] ?: 0.0f
+                        val otherPer = percentagesMap["Others"] ?: 0.0f
 //
 //                        val slicesList = listOf(
 //                            PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal", label = "Personal"),
