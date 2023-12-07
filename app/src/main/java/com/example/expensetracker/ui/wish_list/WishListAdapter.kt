@@ -69,8 +69,6 @@ class WishHolder(
                 }
 
                 deleteBtn.setOnClickListener {
-                    Log.i("Wish", "message")
-
                     onRemoveClicked(expense.id)
                 }
 

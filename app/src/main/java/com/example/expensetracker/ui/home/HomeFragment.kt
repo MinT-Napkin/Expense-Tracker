@@ -91,17 +91,14 @@ class HomeFragment : Fragment() {
             val expensesList = expenseListViewModel.expenses
 
             val categoryValueFlow: Flow<Map<String, Float>> = expensesList.map { expenses ->
-                expenses.groupBy { it.category }
-                    .mapValues { (_, list) -> list.sumByDouble { it.value.toDouble() }.toFloat() }
-            }
-
-            val categoryCountFlow: Flow<Map<String, Int>> = expensesList.map { expenses ->
-                expenses.groupBy { it.category }
-                    .mapValues { (_, list) -> list.size }
+                expenses.filter { it.isPaid }
+                        .groupBy { it.category }
+                        .mapValues { (_, list) -> list.sumByDouble { it.value.toDouble() }.toFloat() }
             }
 
             val totalValueFlow: Flow<Float> = expensesList.map { expenses ->
-                expenses.sumByDouble { it.value.toDouble() }.toFloat()
+                expenses.filter { it.isPaid }
+                        .sumByDouble { it.value.toDouble() }.toFloat()
             }
 
             val percentagesFlow: Flow<Map<String, Float>> = combine(
@@ -125,15 +122,19 @@ class HomeFragment : Fragment() {
 
                         pieChart.apply {
                             slices = listOf(
-                                PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal"),
-                                PieChart.Slice(billsPer, Color.rgb(171, 152, 158), legend = "Bills"),
-                                PieChart.Slice(utilitiesPer, Color.rgb(171, 152, 214), legend = "Utilities"),
-                                PieChart.Slice(transportationPer, Color.rgb(171, 214, 214), legend = "Transportation"),
-                                PieChart.Slice(foodPer, Color.rgb(244, 232, 215), legend = "Food"),
-                                PieChart.Slice(entertainmentPer, Color.rgb(170, 213, 220), legend = "Entertainment"),
-                                PieChart.Slice(giftsPer, Color.rgb(222, 244, 244), legend = "Gift(s)"),
-                                PieChart.Slice(otherPer, Color.rgb(244, 222, 220), legend = "Others"),
+                                PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal", label = "Personal"),
+                                PieChart.Slice(billsPer, Color.rgb(171, 152, 158), legend = "Bills", label = "Bills"),
+                                PieChart.Slice(utilitiesPer, Color.rgb(171, 152, 214), legend = "Utilities", label = "Utilities"),
+                                PieChart.Slice(transportationPer, Color.rgb(171, 214, 214), legend = "Transportation", label = "Transportation"),
+                                PieChart.Slice(foodPer, Color.rgb(244, 232, 215), legend = "Food", label = "Food"),
+                                PieChart.Slice(entertainmentPer, Color.rgb(170, 213, 220), legend = "Entertainment", label = "Entertainment"),
+                                PieChart.Slice(giftsPer, Color.rgb(222, 244, 244), legend = "Gift(s)", label = "Gift(s)"),
+                                PieChart.Slice(otherPer, Color.rgb(244, 222, 220), legend = "Others", label = "Others"),
                             )
+                            labelsColor = Color.BLACK
+                            labelsSize = Dimension.DP(10.0f)
+                            startAngle = 0
+                            labelType = PieChart.LabelType.INSIDE
                         }
                     }
                 }

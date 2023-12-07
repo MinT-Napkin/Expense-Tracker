@@ -73,6 +73,10 @@ class WishListFragment : Fragment() {
                 }
             }
         }
+
+        binding.apply {
+
+        }
     }
 
     override fun onDestroyView() {
