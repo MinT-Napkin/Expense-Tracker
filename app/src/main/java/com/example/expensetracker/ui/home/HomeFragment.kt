@@ -1,7 +1,7 @@
 package com.example.expensetracker.ui.home
 
-import android.R
 import android.app.Dialog
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,9 +21,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentHomeBinding
+import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
+import ir.mahozad.android.PieChart
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import com.example.expensetracker.R
+import com.example.expensetracker.ui.expense_list.ExpenseListAdapter
+import com.example.expensetracker.ui.expense_list.ExpenseListFragmentDirections
+import ir.mahozad.android.DimensionResource
+import ir.mahozad.android.component.Alignment
+import ir.mahozad.android.unit.Dimension
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 
 class HomeFragment : Fragment() {
@@ -37,6 +48,8 @@ class HomeFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) {
         "Cannot access binding because it is null."
     }
+
+    private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +78,50 @@ class HomeFragment : Fragment() {
                 //TODO
                 val action = HomeFragmentDirections.actionFragmentHomeToAddExpenseFragment()
                 findNavController().navigate(action)
+            }
+
+            val expensesList = expenseListViewModel.expenses
+
+            val categoryCountFlow: Flow<Map<String, Int>> = expensesList.map { expenses ->
+                expenses.groupBy { it.category }
+                    .mapValues { (_, list) -> list.size }
+            }
+
+            val totalCountFlow: Flow<Int> = expensesList.map { it.size }
+
+            val percentagesFlow: Flow<Map<String, Float>> = combine(
+                categoryCountFlow,
+                totalCountFlow
+            ) { categoryCount, totalCount ->
+                categoryCount.mapValues { (_, count) -> count.toFloat() / totalCount }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    percentagesFlow.collect { percentagesMap ->
+                        val personalPer = percentagesMap["Personal"] ?: 0.0f
+                        val billsPer = percentagesMap["Bills"] ?: 0.0f
+                        val utilitiesPer = percentagesMap["Utilities"] ?: 0.0f
+                        val transportationPer = percentagesMap["Transportation"] ?: 0.0f
+                        val foodPer = percentagesMap["Food"] ?: 0.0f
+                        val entertainmentPer = percentagesMap["Entertainment"] ?: 0.0f
+                        val giftsPer = percentagesMap["Gifts"] ?: 0.0f
+                        val otherPer = percentagesMap["Other"] ?: 0.0f
+
+                        pieChart.apply {
+                            slices = listOf(
+                                PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal"),
+                                PieChart.Slice(billsPer, Color.rgb(171, 152, 158), legend = "Bills"),
+                                PieChart.Slice(utilitiesPer, Color.rgb(171, 152, 214), legend = "Utilities"),
+                                PieChart.Slice(transportationPer, Color.rgb(171, 214, 214), legend = "Transportation"),
+                                PieChart.Slice(foodPer, Color.rgb(244, 232, 215), legend = "Food"),
+                                PieChart.Slice(entertainmentPer, Color.rgb(170, 213, 220), legend = "Entertainment"),
+                                PieChart.Slice(giftsPer, Color.rgb(222, 244, 244), legend = "Gift(s)"),
+                                PieChart.Slice(otherPer, Color.rgb(244, 222, 220), legend = "Others"),
+                            )
+                        }
+                    }
+                }
             }
         }
 
