@@ -75,6 +75,8 @@ class ExpenseHolder(
 class ExpenseListAdapter(
     private val expenses: List<Expense>,
     private val onExpenseClicked: (expenseId: UUID) -> Unit,
+    private val onDeleteClicked: (expenseId: UUID) -> Unit
+
 
 ) : RecyclerView.Adapter<ExpenseHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseHolder {
