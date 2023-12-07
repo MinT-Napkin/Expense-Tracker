@@ -46,10 +46,15 @@ class ExpenseListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 expenseListViewModel.expenses.collect { expenses ->
                     binding.expenseRecyclerView.adapter =
-                        ExpenseListAdapter(expenses) { crimeId ->
-                            val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(crimeId)
-                            findNavController().navigate(action)
-                        }
+                        ExpenseListAdapter(expenses,
+                            { expenseId ->
+                                val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(expenseId)
+                                findNavController().navigate(action)
+                            },
+                            { expense ->
+                                expenseListViewModel.deleteExpense(expense)
+                            }
+                        )
                 }
 
             }
