@@ -16,7 +16,6 @@ class ExpenseHolder(
     val binding: ListItemExpenseBinding
 ) : RecyclerView.ViewHolder(binding.root)
 {
-    val deleteButton: Button = binding.deleteBtn
     // refer to page 437 for expenseID explanation
     fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit, onDeleteClicked: (expenseId: UUID) -> Unit) {
 
@@ -65,9 +64,10 @@ class ExpenseHolder(
                     expenseCategoryImage.setImageResource(R.drawable.testimage)
                 }
             }
-        }
-        deleteButton.setOnClickListener {
-            onDeleteClicked(expense.id)
+
+            deleteBtn.setOnClickListener {
+                onDeleteClicked(expense.id)
+            }
         }
     }
 }
@@ -88,11 +88,6 @@ class ExpenseListAdapter(
     override fun onBindViewHolder(holder: ExpenseHolder, position: Int) {
         val expense = expenses[position]
         holder.bind(expense, onExpenseClicked,onDeleteClicked)
-
-        // Set up click listener for delete button
-        holder.deleteButton.setOnClickListener {
-//            onDeleteClicked(expense.id)
-        }
     }
 
     override fun getItemCount() = expenses.size
