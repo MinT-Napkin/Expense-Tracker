@@ -9,7 +9,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_wish_list">Wish List</string>
+    <string name="menu_slideshow">Slideshow</string>
     <string name="menu_converter">Currency Converter</string>
     <string name="add_expense_txt">+</string>
     <string name="manuel_input_hint">Insert expense amount here</string>
@@ -22,7 +22,7 @@
     <string name="expenseList_desc_label">Description</string>
     <string name="expenseList_category_label">Category</string>
     <string name="expenseList_date_label">Date</string>
-    <string name="expenseList_is_planned_expense">Scheduled Expense</string>
+    <string name="expenseList_is_paid_label">Is Paid?</string>
 
     <string name="enter_amount_hint">Enter Amount</string>
     <string name="convert_button_text">Convert</string>

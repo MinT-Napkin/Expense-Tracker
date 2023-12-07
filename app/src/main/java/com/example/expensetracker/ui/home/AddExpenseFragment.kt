@@ -1,18 +1,15 @@
 package com.example.expensetracker.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.expensetracker.R
 import com.example.expensetracker.databinding.FragmentAddExpenseBinding
 import com.example.expensetracker.ui.expense_list.Expense
@@ -106,19 +103,12 @@ class AddExpenseFragment : Fragment() {
 
             expenseIsPaid.setOnCheckedChangeListener { _, isChecked ->
                 //TODO: for 'gift list' feature
-                newExpense = newExpense.copy(isPaid = !isChecked)
+                newExpense = newExpense.copy(isPaid = true)
+                expenseIsPaid.isEnabled = false
             }
 
-            expenseAddConfirm.setOnClickListener {
-                // Close the keyboard
-                val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
-
-                // Perform the action (addExpense in your case)
+            expenseAddConfirm.setOnClickListener{
                 expenseListViewModel.addExpense(newExpense)
-
-                // Navigate back to the previous fragment (Assuming you're using Navigation Component)
-                findNavController().navigateUp()
             }
         }
     }
