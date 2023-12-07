@@ -67,7 +67,7 @@
         android:id="@+id/expense_is_paid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expenseList_is_paid_label" />
+        android:text="@string/expenseList_is_planned_expense" />
 
     <Button
         android:id="@+id/expense_add_confirm"

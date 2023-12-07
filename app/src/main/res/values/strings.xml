@@ -22,7 +22,7 @@
     <string name="expenseList_desc_label">Description</string>
     <string name="expenseList_category_label">Category</string>
     <string name="expenseList_date_label">Date</string>
-    <string name="expenseList_is_paid_label">Is Paid?</string>
+    <string name="expenseList_is_planned_expense">Scheduled Expense</string>
 
     <string name="enter_amount_hint">Enter Amount</string>
     <string name="convert_button_text">Convert</string>

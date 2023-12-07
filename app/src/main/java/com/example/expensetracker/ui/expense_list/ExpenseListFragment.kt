@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
+import com.example.expensetracker.ui.wish_list.WishListAdapter
 import kotlinx.coroutines.launch
 
 private const val TAG = "ExpenseListFragment"
@@ -42,13 +43,16 @@ class ExpenseListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 expenseListViewModel.expenses.collect { expenses ->
+
+                    val paidExpenses = expenses.filter { it.isPaid }
+
                     binding.expenseRecyclerView.adapter =
                         ExpenseListAdapter(
-                            expenses,
-                            { crimeId ->
+                            paidExpenses,
+                            { expenseId ->
                                 val action =
                                     ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(
-                                        crimeId
+                                        expenseId
                                     )
                                 findNavController().navigate(action)
                             },

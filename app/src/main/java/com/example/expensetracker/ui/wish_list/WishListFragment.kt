@@ -47,13 +47,14 @@ class WishListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 wishListViewModel.expenses.collect { expenses ->
+                    val unpaidExpenses = expenses.filter { !it.isPaid }
+
                     binding.expenseRecyclerView.adapter =
-                        WishListAdapter(expenses) { expenseId ->
+                        WishListAdapter(unpaidExpenses) { expenseId ->
                             val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(expenseId)
                             findNavController().navigate(action)
                         }
                 }
-
             }
         }
     }
