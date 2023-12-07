@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.expense_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope

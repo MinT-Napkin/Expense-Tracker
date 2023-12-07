@@ -18,7 +18,7 @@ class WishHolder(
 ) : RecyclerView.ViewHolder(binding.root)
 {
     // refer to page 437 for expenseID explanation
-    fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit) {
+    fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit, onRemoveClicked: (expenseId: UUID) -> Unit, onPayClicked: (expenseId: UUID) -> Unit) {
 
         if(!expense.isPaid)
         {
@@ -67,6 +67,16 @@ class WishHolder(
                         expenseCategoryImage.setImageResource(R.drawable.testimage)
                     }
                 }
+
+                deleteBtn.setOnClickListener {
+                    Log.i("Wish", "message")
+
+                    onRemoveClicked(expense.id)
+                }
+
+                addBtn.setOnClickListener {
+                    onPayClicked(expense.id)
+                }
             }
         }
     }
@@ -74,7 +84,9 @@ class WishHolder(
 
 class WishListAdapter(
     private val expenses: List<Expense>,
-    private val onExpenseClicked: (expenseId: UUID) -> Unit
+    private val onExpenseClicked: (expenseId: UUID) -> Unit,
+    private val onRemoveClicked: (expenseId: UUID) -> Unit,
+    private val onPayClicked: (expenseId: UUID) -> Unit
 ) : RecyclerView.Adapter<WishHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -87,7 +99,7 @@ class WishListAdapter(
 
     override fun onBindViewHolder(holder: WishHolder, position: Int) {
         val expense = expenses[position]
-        holder.bind(expense, onExpenseClicked)
+        holder.bind(expense, onExpenseClicked, onRemoveClicked, onPayClicked)
     }
 
     override fun getItemCount() = expenses.size

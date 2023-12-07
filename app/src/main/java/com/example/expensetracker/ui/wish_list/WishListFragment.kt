@@ -1,26 +1,29 @@
 package com.example.expensetracker.ui.wish_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
-import com.example.expensetracker.ui.expense_list.ExpenseListAdapter
-import com.example.expensetracker.ui.expense_list.ExpenseListFragmentDirections
-import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
+import com.example.expensetracker.databinding.FragmentWishListBinding
+import com.example.expensetracker.ui.expense_list.*
 import kotlinx.coroutines.launch
+import kotlin.math.exp
 
 private const val TAG = "WishListFragment"
 class WishListFragment : Fragment() {
 
-    private var _binding: FragmentExpenseListBinding? = null
+    private var _binding: FragmentWishListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,15 +31,17 @@ class WishListFragment : Fragment() {
 
     private val wishListViewModel: WishListViewModel by viewModels()
 
+    private val expenseListViewModel: ExpenseListViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExpenseListBinding.inflate(inflater, container, false)
+        _binding = FragmentWishListBinding.inflate(inflater, container, false)
 
         //pg 307
-        binding.expenseRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.wishListRecyclerView.layoutManager = LinearLayoutManager(context)
 
         return binding.root
     }
@@ -49,11 +54,22 @@ class WishListFragment : Fragment() {
                 wishListViewModel.expenses.collect { expenses ->
                     val unpaidExpenses = expenses.filter { !it.isPaid }
 
-                    binding.expenseRecyclerView.adapter =
-                        WishListAdapter(unpaidExpenses) { expenseId ->
-                            val action = ExpenseListFragmentDirections.actionFragmentGalleryToFragmentEditExpense(expenseId)
-                            findNavController().navigate(action)
-                        }
+                    binding.wishListRecyclerView.adapter =
+                        WishListAdapter(unpaidExpenses,
+                            ({ expenseId ->
+                                val action = WishListFragmentDirections.actionFragmentWishListToFragmentEditExpense(expenseId)
+                                findNavController().navigate(action)
+
+                                val wishValueL = wishListViewModel.getExpense(expenseId).isPaid
+                                Log.i("Wish", "$wishValueL")
+                            }),
+                            ({ expenseId ->
+                                expenseListViewModel.deleteExpense(expenseId)
+                            }),
+                            ({ expenseId ->
+                                wishListViewModel.updateExpenseIsPaid(expenseId)
+                            }),
+                        )
                 }
             }
         }

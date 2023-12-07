@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class WishListViewModel : ViewModel() {
 
@@ -29,6 +30,20 @@ class WishListViewModel : ViewModel() {
             expenseRepository.getExpenses().collect {
                 _expenses.value = it
             }
+        }
+    }
+
+    fun getExpense(expenseId: UUID): Expense {
+        return expenseRepository.getExpense(expenseId)
+    }
+
+    // In a ViewModel or Repository
+    fun updateExpenseIsPaid(expenseId: UUID) {
+        // Assuming repository is an instance of ExpenseRepository
+        val expense = expenseRepository.getExpense(expenseId)
+        expense?.let {
+            val updatedExpense = it.copy(isPaid = true)
+            expenseRepository.updateExpense(updatedExpense)
         }
     }
 }
