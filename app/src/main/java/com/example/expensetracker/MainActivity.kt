@@ -1,17 +1,17 @@
 package com.example.expensetracker
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.expensetracker.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+import ir.mahozad.android.PieChart
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +41,17 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val pieChart = findViewById<PieChart>(R.id.pieChart)
+        pieChart.slices = listOf(
+            PieChart.Slice(0.1f, Color.rgb(214, 152, 158), legend = "Personal"),
+            PieChart.Slice(0.1f, Color.rgb(171, 152, 158), legend = "Bills"),
+            PieChart.Slice(0.1f, Color.rgb(171, 152, 214), legend = "Utilities"),
+            PieChart.Slice(0.1f, Color.rgb(171, 214, 214), legend = "Transportation"),
+            PieChart.Slice(0.1f, Color.rgb(244, 232, 215), legend = "Food"),
+            PieChart.Slice(0.1f, Color.rgb(170, 213, 220), legend = "Entertainment"),
+            PieChart.Slice(0.2f, Color.rgb(222, 244, 244), legend = "Gift(s)"),
+            PieChart.Slice(0.2f, Color.rgb(244, 222, 220), legend = "Others"),
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
