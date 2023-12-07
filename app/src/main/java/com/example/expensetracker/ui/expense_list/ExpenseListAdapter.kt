@@ -3,6 +3,7 @@ package com.example.expensetracker.ui.expense_list
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expensetracker.R
 import com.example.expensetracker.databinding.ListItemExpenseBinding
@@ -16,7 +17,7 @@ class ExpenseHolder(
 ) : RecyclerView.ViewHolder(binding.root)
 {
     // refer to page 437 for expenseID explanation
-    fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit) {
+    fun bind(expense: Expense, onExpenseClicked: (expenseId: UUID) -> Unit, onDeleteClicked: (expenseId: UUID) -> Unit) {
 
         binding.apply{
 
@@ -63,18 +64,22 @@ class ExpenseHolder(
                     expenseCategoryImage.setImageResource(R.drawable.testimage)
                 }
             }
+
+            deleteBtn.setOnClickListener {
+                onDeleteClicked(expense.id)
+            }
         }
     }
 }
 
 class ExpenseListAdapter(
     private val expenses: List<Expense>,
-    private val onExpenseClicked: (expenseId: UUID) -> Unit
+    private val onExpenseClicked: (expenseId: UUID) -> Unit,
+    private val onDeleteClicked: (expenseId: UUID) -> Unit
+
+
 ) : RecyclerView.Adapter<ExpenseHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ) : ExpenseHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemExpenseBinding.inflate(inflater, parent, false)
         return ExpenseHolder(binding)
@@ -82,7 +87,7 @@ class ExpenseListAdapter(
 
     override fun onBindViewHolder(holder: ExpenseHolder, position: Int) {
         val expense = expenses[position]
-        holder.bind(expense, onExpenseClicked)
+        holder.bind(expense, onExpenseClicked,onDeleteClicked)
     }
 
     override fun getItemCount() = expenses.size

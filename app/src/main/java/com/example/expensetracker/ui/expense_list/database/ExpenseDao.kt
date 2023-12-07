@@ -1,6 +1,7 @@
 package com.example.expensetracker.ui.expense_list.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -28,5 +29,10 @@ interface ExpenseDao
 
     @Insert
     fun addExpense(expense: Expense)
+    @Delete
+    fun deleteExpense(expense: Expense)
+
+    @Query("DELETE FROM expense WHERE id = :expenseId")
+    fun deleteExpenseById(expenseId: UUID)
 
 }
