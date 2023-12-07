@@ -1,4 +1,5 @@
 package com.example.expensetracker
+
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_currency), drawerLayout)
+            R.id.nav_home, R.id.nav_gallery, R.id.nav_wish_list, R.id.nav_currency), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 

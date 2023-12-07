@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/expenseList_title_label" />
+    <EditText
+        android:id="@+id/expense_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/expenseList_hint_label"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/expenseList_desc_label" />
+    <EditText
+        android:id="@+id/expense_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/expenseList_hintDesc_label"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+    <Spinner
+        android:id="@+id/expense_category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+    <!--    <Button-->
+    <!--        android:id="@+id/expense_date_paid"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:text="Wed May 11 11:56 EST 2022" />-->
+    <!--    <CheckBox-->
+    <!--        android:id="@+id/expense_is_paid"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="@string/expenseList_is_paid_label" />-->
+
+</LinearLayout>
