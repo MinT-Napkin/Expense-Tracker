@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.home
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.example.expensetracker.databinding.FragmentHomeBinding
 import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
 import ir.mahozad.android.PieChart
 import ir.mahozad.android.unit.Dimension
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -44,17 +46,31 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val budget = loadBudget()
 
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            textView.text = "Budget: $budget"
+//            homeViewModel.updateUi()
         }
 
         val textView2: TextView = binding.textHome2
-        homeViewModel.text2.observe(viewLifecycleOwner) {
-            textView2.text = it
-        }
 
+        homeViewModel.text2.observe(viewLifecycleOwner) {
+
+            val expensesList = expenseListViewModel.expenses.value // Retrieve the current list of expenses
+
+            // Filter the list to get only the paid expenses
+            val paidExpenses = expensesList.filter { it.isPaid }
+
+            // Calculate total expenses from the paid expenses list
+            val totalExpenses: Float = paidExpenses.sumByDouble { it.value.toDouble() }.toFloat()
+
+            // Calculate remaining budget after deducting expenses
+            val remainingBudget = (budget - totalExpenses)
+
+            textView2.text = "After Expenses: $remainingBudget"
+        }
 
         return root
     }
@@ -66,6 +82,17 @@ class HomeFragment : Fragment() {
             addExpenseBtn.setOnClickListener{
                 val action = HomeFragmentDirections.actionFragmentHomeToAddExpenseFragment()
                 findNavController().navigate(action)
+            }
+
+            textHome.setOnClickListener{
+                UpdateBudgetDialogFragment().show(childFragmentManager, "UpdateBudgetDialogFragment")
+            }
+
+            updateBtn.setOnClickListener{
+                homeViewModel.updateUi()
+                // Reload current fragment
+//                parentFragmentManager.beginTransaction().detach(this@HomeFragment).commit ()
+//                parentFragmentManager.beginTransaction().attach(this@HomeFragment).commit ()
             }
 
             // budget handling
@@ -135,8 +162,9 @@ class HomeFragment : Fragment() {
                             legendsColor = Color.BLACK
                             legendsSize = Dimension.DP(15.0f)
                         }
-                    }
-                }
+                    }// after pie
+
+                } //2nd part coroutine end
             } // coroutine end
 
             setBtn.setOnClickListener {
@@ -144,13 +172,16 @@ class HomeFragment : Fragment() {
                 dialog.show(requireActivity().supportFragmentManager, "UpdateBudgetDialog")
             }
 
-            updateBtn.setOnClickListener{
-                homeViewModel.updateUi()
-            }
-
 
         } // binding end
 
+    }
+
+    private fun loadBudget(): Float {
+        val sharedPreferences =
+            requireActivity().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+
+        return sharedPreferences.getFloat("savedBudget", 0.0F)
     }
 
     override fun onDestroyView() {

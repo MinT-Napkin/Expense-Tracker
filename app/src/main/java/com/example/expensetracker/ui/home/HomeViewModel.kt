@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,6 +40,8 @@ class HomeViewModel : ViewModel() {
                 _expenses.value = it
             }
         }
+
+        Log.d("test", "collected: $${_expenses.value}")
     }
 
     fun updateBudget(num: Float) {
@@ -64,6 +67,21 @@ class HomeViewModel : ViewModel() {
 
             _text2.value = "After Expenses: $$remainingBudget" // Update the remaining budget text
         }
+    }
+
+    fun getTotalExpenses(): Float {
+        var totalExpenses = 0F
+        viewModelScope.launch {
+            val expensesList = _expenses.value // Retrieve the current list of expenses
+            Log.d("test", "expense list: $$expensesList")
+            // Filter the list to get only the paid expenses
+            val paidExpenses = expensesList.filter { it.isPaid }
+            Log.d("test", "paid expenses: $$paidExpenses")
+            // Calculate total expenses from the paid expenses list
+            totalExpenses = paidExpenses.sumOf { it.value.toDouble() }.toFloat()
+            Log.d("test", "total added expenses : $$totalExpenses")
+        }
+        return totalExpenses
     }
 
 
