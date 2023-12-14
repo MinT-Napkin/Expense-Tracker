@@ -60,7 +60,6 @@ class ExpenseListFragment : Fragment() {
                             },
                             { expenseId ->
                                 expenseListViewModel.deleteExpense(expenseId)
-                                homeListViewModel.updateUi()
                             }
                         )
                 }

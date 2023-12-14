@@ -1,11 +1,13 @@
 package com.example.expensetracker.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.expensetracker.R
@@ -33,8 +35,11 @@ class UpdateBudgetDialogFragment : DialogFragment() {
             val enteredBudget = budgetInput.text.toString().toFloatOrNull() ?: 0.0f
             // Pass the entered budget value to the parent fragment/activity
             (requireActivity() as? OnBudgetUpdatedListener)?.onBudgetUpdated(enteredBudget)
-            homeViewModel.updateBudget(enteredBudget)
+
+            saveBudget(enteredBudget)
             dismiss()
+
+            recreate(requireActivity())
         }
 
         cancelButton.setOnClickListener {
@@ -42,6 +47,15 @@ class UpdateBudgetDialogFragment : DialogFragment() {
         }
 
         return view
+
+    }
+
+    fun saveBudget(num: Float){
+        val sharedPreferences = requireActivity().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.apply{
+            putFloat("savedBudget", num)
+        }.apply()
     }
 }
 
