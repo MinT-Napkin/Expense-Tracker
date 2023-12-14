@@ -7,8 +7,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_home">Budget</string>
+    <string name="menu_gallery">Expenses</string>
     <string name="menu_wish_list">Wish List</string>
     <string name="menu_converter">Currency Converter</string>
     <string name="add_expense_txt">+</string>
@@ -16,8 +16,8 @@
     <string name="confirm_btn">CONFIRM</string>
 
     <!--expense list strings-->
-    <string name="expenseList_hint_label">Enter amount here.</string>
-    <string name="expenseList_hintDesc_label">Enter description here. (optional)</string>
+    <string name="expenseList_hint_label">Enter amount.</string>
+    <string name="expenseList_hintDesc_label">Enter description here.</string>
     <string name="expenseList_title_label">Value</string>
     <string name="expenseList_desc_label">Description</string>
     <string name="expenseList_category_label">Category</string>

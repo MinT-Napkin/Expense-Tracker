@@ -35,9 +35,9 @@ class AddExpenseFragment : Fragment() {
         super.onCreate(savedInstanceState)
         newExpense = Expense(
             id = UUID.randomUUID(),
-            value = 10.toFloat(),
-            description = "Expense #0",
-            category = "Food",
+            value = 0.toFloat(),
+            description = "Unnamed Expense",
+            category = "Other Fees",
             date = Date(),
             isPaid = true
         )
@@ -98,14 +98,7 @@ class AddExpenseFragment : Fragment() {
                 }
             }
 
-            expenseDatePaid.apply {
-                //TODO: for 'gift list' feature
-                text = newExpense.date.toString()
-                isEnabled = false
-            }
-
             expenseIsPaid.setOnCheckedChangeListener { _, isChecked ->
-                //TODO: for 'gift list' feature
                 newExpense = newExpense.copy(isPaid = !isChecked)
             }
 
