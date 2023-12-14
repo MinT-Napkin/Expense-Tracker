@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
                         val foodPer = percentagesMap["Food"] ?: 0.0f
                         val entertainmentPer = percentagesMap["Entertainment"] ?: 0.0f
                         val giftsPer = percentagesMap["Gift(s)"] ?: 0.0f
-                        val otherPer = percentagesMap["Others"] ?: 0.0f
+                        val otherPer = percentagesMap["Other Fees"] ?: 0.0f
 //
 //                        val slicesList = listOf(
 //                            PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal", label = "Personal"),
@@ -118,14 +118,14 @@ class HomeFragment : Fragment() {
 
                         pieChart.apply {
                             slices = listOf(
-                                PieChart.Slice(personalPer, Color.rgb(251, 210, 6), legend = "Personal", label = personalPer.toString()),
+                                PieChart.Slice(personalPer, Color.rgb(251, 210, 6), legend = "Personal"),
                                 PieChart.Slice(billsPer, Color.rgb(254, 175, 138), legend = "Bills"),
                                 PieChart.Slice(utilitiesPer, Color.rgb(253, 122, 140), legend = "Utilities"),
                                 PieChart.Slice(transportationPer, Color.rgb(204, 137, 214), legend = "Transportation"),
                                 PieChart.Slice(foodPer, Color.rgb(191, 207, 240), legend = "Food"),
                                 PieChart.Slice(entertainmentPer, Color.rgb(156, 231, 201), legend = "Entertainment"),
                                 PieChart.Slice(giftsPer, Color.rgb(77, 198, 86), legend = "Gift(s)"),
-                                PieChart.Slice(otherPer, Color.rgb(166, 170, 178), legend = "Others"),
+                                PieChart.Slice(otherPer, Color.rgb(166, 170, 178), legend = "Other Fees"),
                             )
                             labelsColor = Color.BLACK
                             labelsSize = Dimension.DP(12.0f)
