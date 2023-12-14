@@ -1,41 +1,25 @@
 package com.example.expensetracker.ui.home
 
-import android.app.Dialog
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentHomeBinding
 import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
 import ir.mahozad.android.PieChart
-import kotlinx.coroutines.launch
-import java.io.File
-import java.util.*
-import com.example.expensetracker.R
-import com.example.expensetracker.ui.expense_list.Expense
-import com.example.expensetracker.ui.expense_list.ExpenseListAdapter
-import com.example.expensetracker.ui.expense_list.ExpenseListFragmentDirections
-import ir.mahozad.android.DimensionResource
-import ir.mahozad.android.component.Alignment
 import ir.mahozad.android.unit.Dimension
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -134,19 +118,22 @@ class HomeFragment : Fragment() {
 
                         pieChart.apply {
                             slices = listOf(
-                                PieChart.Slice(personalPer, Color.rgb(214, 152, 158), legend = "Personal", label = "Personal"),
-                                PieChart.Slice(billsPer, Color.rgb(171, 152, 158), legend = "Bills", label = "Bills"),
-                                PieChart.Slice(utilitiesPer, Color.rgb(171, 152, 214), legend = "Utilities", label = "Utilities"),
-                                PieChart.Slice(transportationPer, Color.rgb(171, 214, 214), legend = "Transportation", label = "Transportation"),
-                                PieChart.Slice(foodPer, Color.rgb(244, 232, 215), legend = "Food", label = "Food"),
-                                PieChart.Slice(entertainmentPer, Color.rgb(170, 213, 220), legend = "Entertainment", label = "Entertainment"),
-                                PieChart.Slice(giftsPer, Color.rgb(222, 244, 244), legend = "Gift(s)", label = "Gift(s)"),
-                                PieChart.Slice(otherPer, Color.rgb(244, 222, 220), legend = "Others", label = "Others"),
+                                PieChart.Slice(personalPer, Color.rgb(251, 210, 6), legend = "Personal", label = personalPer.toString()),
+                                PieChart.Slice(billsPer, Color.rgb(254, 175, 138), legend = "Bills"),
+                                PieChart.Slice(utilitiesPer, Color.rgb(253, 122, 140), legend = "Utilities"),
+                                PieChart.Slice(transportationPer, Color.rgb(204, 137, 214), legend = "Transportation"),
+                                PieChart.Slice(foodPer, Color.rgb(191, 207, 240), legend = "Food"),
+                                PieChart.Slice(entertainmentPer, Color.rgb(156, 231, 201), legend = "Entertainment"),
+                                PieChart.Slice(giftsPer, Color.rgb(77, 198, 86), legend = "Gift(s)"),
+                                PieChart.Slice(otherPer, Color.rgb(166, 170, 178), legend = "Others"),
                             )
                             labelsColor = Color.BLACK
-                            labelsSize = Dimension.DP(10.0f)
+                            labelsSize = Dimension.DP(12.0f)
                             startAngle = 0
                             labelType = PieChart.LabelType.INSIDE
+                            isLegendEnabled = true
+                            legendsColor = Color.BLACK
+                            legendsSize = Dimension.DP(15.0f)
                         }
                     }
                 }
