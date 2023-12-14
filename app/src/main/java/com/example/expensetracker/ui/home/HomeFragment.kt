@@ -1,40 +1,28 @@
 package com.example.expensetracker.ui.home
 
-import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentHomeBinding
 import com.example.expensetracker.ui.expense_list.ExpenseListViewModel
 import ir.mahozad.android.PieChart
-import kotlinx.coroutines.launch
-import java.io.File
-import java.util.*
-import com.example.expensetracker.R
-import com.example.expensetracker.ui.expense_list.ExpenseListAdapter
-import com.example.expensetracker.ui.expense_list.ExpenseListFragmentDirections
-import ir.mahozad.android.DimensionResource
-import ir.mahozad.android.component.Alignment
-import ir.mahozad.android.unit.Dimension
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -65,15 +53,10 @@ class HomeFragment : Fragment() {
 
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        textView.text = loadBudget().toString()
 
         val textView2: TextView = binding.textHome2
-        homeViewModel.text2.observe(viewLifecycleOwner) {
-            textView2.text = it
-        }
-
+        textView2.text = (loadBudget() - HomeViewModel().getTotalExpenses()).toString()
 
         return root
     }
@@ -87,6 +70,17 @@ class HomeFragment : Fragment() {
                 val action = HomeFragmentDirections.actionFragmentHomeToAddExpenseFragment()
                 findNavController().navigate(action)
             }
+
+            textHome.setOnClickListener{
+                UpdateBudgetDialogFragment().show(childFragmentManager, "UpdateBudgetDialogFragment")
+            }
+
+            updateBtn.setOnClickListener{
+                // Reload current fragment
+                parentFragmentManager.beginTransaction().detach(this@HomeFragment).commit ()
+                parentFragmentManager.beginTransaction().attach(this@HomeFragment).commit ()
+            }
+
 
             val expensesList = expenseListViewModel.expenses
 
@@ -145,5 +139,12 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
+    }
+
+    private fun loadBudget(): Float {
+        val sharedPreferences =
+            requireActivity().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+
+        return sharedPreferences.getFloat("savedBudget", 0.0F)
     }
 }

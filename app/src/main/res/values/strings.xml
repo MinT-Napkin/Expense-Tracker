@@ -24,10 +24,12 @@
     <string name="expenseList_date_label">Date</string>
     <string name="expenseList_is_planned_expense">Scheduled Expense</string>
 
+    <!--currency converter strings-->
     <string name="enter_amount_hint">Enter Amount</string>
     <string name="convert_button_text">Convert</string>
     <string name="converted_amount">Converted Amount: %1$.2f</string>
     <string name="convert_settings">Currency Converter</string>
+
     <!--category array list-->
     <string-array name="categories_array">
         <item>Personal</item>
